@@ -1,3 +1,59 @@
+<?php 
+
+session_start();
+
+    if(isset($_POST["submit"])){
+        $email      = $_POST["email"];
+        $password   = $_POST["password"];
+    
+    // User data to send using HTTP POST method in curl
+    $data = array(
+        'email'         => $email,
+        'password'      => $password,
+    );
+
+    // var_dump($data);
+    
+    // Data should be passed as json format
+    $data_json = json_encode($data);
+
+    // var_dump($data_json);
+    
+    // API URL to send data
+    $url = 'http://127.0.0.1:8000/api/v1/auth/login';
+    
+    // curl initiate
+    $ch = curl_init();
+    
+    curl_setopt($ch, CURLOPT_URL, $url);
+    
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Accept: application/json'));
+    
+    // SET Method as a POST
+    curl_setopt($ch, CURLOPT_POST, 1);
+    
+    // Pass user data in POST command
+    curl_setopt($ch, CURLOPT_POSTFIELDS,$data_json);
+    
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    
+    // Execute curl and assign returned data
+    $response  = curl_exec($ch);
+    
+    // Close curl
+    curl_close($ch);
+    
+    // See response if data is posted successfully or any error
+    print_r ($response);
+    // $_SESSION["token"] = $response;
+    
+    // redirect to book lists
+    // header("Location: /../lms-admin/dashboard.php");
+    // die();
+    
+    }
+    ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,8 +61,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <form action="" method="post"></form>
+<body class="flex justify-center items-center h-screen bg-sky-950">
+    <div class="flex flex-col items-center p-6 bg-gray-100 rounded-md shadow-2xl">
+        <h1 class="font-bold text-xl m-4 text-stone-950">Login</h1>
+
+        <form action="" method="post"> 
+            <input type="email" name="email" placeholder="Enter your e-mail" required
+            class="px-2 py-1 w-full rounded"><br><br>
+            <input type="password" name="password" placeholder="Enter your password"required
+            class="px-2 py-1 w-full rounded"><br><br>
+            <!-- <a href="register.php" class="mx-2 underline text-stone-950">Doesn't have an account?</a> -->
+            <button type="submit" name="submit" class="bg-slate-950 rounded text-white px-4 py-2 mx-2">
+                Login   
+            </button>
+            <!-- <button type="submit">
+                <a href="/../lms-admin/books/index.php" class="bg-slate-950 rounded text-white px-4 py-2 mx-2">Login</a>    
+            </button> -->
+        </form>
+    </div>
 </body>
 </html>

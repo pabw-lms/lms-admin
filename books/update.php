@@ -46,6 +46,11 @@ $book = json_decode($curl_data);
         value="<?= $book->title ?>"
         class="border border-solid border-b-2 border-gray-400 rounded-sm mb-4 px-2"><br>
 
+        <label for="description">Description</label><br>
+        <textarea type="text" name="description" id="description" size="50"
+        class="border border-solid border-b-2 border-gray-400 rounded-sm mb-4 px-2 h-32">
+        <?= $book->description ?></textarea><br>
+
         <label for="author">Author</label><br>
         <input type="text" name="author" id="author"
         value="<?= $book->author ?>"
@@ -99,6 +104,7 @@ if(isset($_POST["submit"])){
     $pages      = $_POST["pages"];
     $stock      = $_POST["stock"];
     $current_stock      = $_POST["current_stock"];
+    $description      = $_POST["description"];
 
 // User data to send using HTTP POST method in curl
 $data = array(
@@ -109,6 +115,7 @@ $data = array(
     'pages'         => $pages,
     'stock'         => $stock,
     'current_stock' => $current_stock,
+    'description' => $description,
 );
 
 // User data to send using HTTP PUT method in curl

@@ -1,5 +1,6 @@
 <?php
-session_start();
+
+// session_start();
 
 // Initiate curl session in a variable (resource)
 $curl_handle = curl_init();
@@ -37,42 +38,58 @@ $books = json_decode($curl_data);
 		}
     </style>
 </head>
-<body>
+<body class="m-0 p-0">
 
     <?php include "../navbar.php"; ?>
-    <div class="flex flex-row justify-between align-center px-4 py-2 ">
+    <div class="flex flex-row justify-between align-center px-4 py-2 border border-solid border-b-2">
         <div class="px-3 py-1 m-2">
             <div class="font-bold">Book Lists</div>
         </div>
-        <div class="m-2">
-            <button class="bg-lime-500 rounded-md text-white font-semibold px-4 py-2">
-                <a href="/../lms-admin/books/create.php">New +</a>
-            </button>
+        <div class="flex items-center m-2">
+            <form action="" method="post">
+                <button type="submit" name="submit" class="bg-gray-200 rounded text-gray-800 font-semibold px-2 py-1 border border-solid border-2 border-gray-200">
+                    Search
+                </button>
+                <input placeholder="Search book's title" type="search" name="search-input" id="search" class="border border-solid border-2 border-gray-200 rounded px-2 py-1" required>    
+            </form>
+            <?php
+                if(isset($_POST['submit'])) { 
+                    header("Location: search.php?title=".$_POST['search-input']);
+                }
+            ?>
         </div>
     </div>
+    <div class="flex justify-start px-8 py-2">
+        <button class="bg-lime-500 rounded-md text-white font-semibold px-4 py-2">
+            <a href="/../lms-admin/books/create.php">New +</a>
+        </button>
+    </div>
 
-    <table class="table-auto w-screen">
+    <table class="table-auto w-full">
         <tr>
+            <th class="border border-solid border-2 border-gray-800">Cover</th>
             <th class="border border-solid border-2 border-gray-800">Title</th>
             <th class="border border-solid border-2 border-gray-800">Author</th>
             <th class="border border-solid border-2 border-gray-800">Publisher</th>
             <th class="border border-solid border-2 border-gray-800">stock</th>
             <th class="border border-solid border-2 border-gray-800">current</th>
-            <th class="border border-solid border-2 border-gray-800">pages</th>
-            <th class="border border-solid border-2 border-gray-800">pub_year</th>
             <th class="border border-solid border-2 border-gray-800">Action</th>
         </tr>
+
         <?php
         // Traverse array and print employee data
         foreach ($books as $book) { ?> 
         <tr>
+            <td class="border border-solid border-2 border-gray-800 px-2 py-1">
+                <div class="flex justify-center">
+                    <img src="<?= $book->cover ?>" style="width: 180px; height: 240px;">
+                </div>
+            </td>
             <td class="border border-solid border-2 border-gray-800 px-2 py-1"><?= $book->title ?></td>
             <td class="border border-solid border-2 border-gray-800 px-2 py-1"><?= $book->author ?></td>
             <td class="border border-solid border-2 border-gray-800 px-2 py-1"><?= $book->publisher ?></td>
             <td class="border border-solid border-2 border-gray-800 px-2 py-1"><?= $book->stock ?></td>
             <td class="border border-solid border-2 border-gray-800 px-2 py-1"><?= $book->current_stock ?></td>
-            <td class="border border-solid border-2 border-gray-800 px-2 py-1"><?= $book->pages ?></td>
-            <td class="border border-solid border-2 border-gray-800 px-2 py-1"><?= $book->pub_year ?></td>
             <td class="border border-solid border-2 border-gray-800 px-2 py-1">
                 <div class="flex flex-row">
                     <a type="button" href="/../lms-admin/books/update.php?id=<?= $book->id ?>"
@@ -91,7 +108,6 @@ $books = json_decode($curl_data);
                                 <div @click="modelOpen = false" x-show="modelOpen" 
                                     class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40" aria-hidden="true"
                                 ></div>
-                    
                                 <div x-show="modelOpen" 
                                     class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
                                     <div class="flex justify-end">

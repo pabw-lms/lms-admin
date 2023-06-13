@@ -16,8 +16,24 @@ $curl_data = curl_exec($curl_handle);
 
 curl_close($curl_handle);
 
+$curl_handle = curl_init();
+
+// $url = "https://dummy.restapiexample.com/api/v1/employees";
+$url = "http://127.0.0.1:8000/api/v1/transactions";
+
+// Set the curl URL option
+curl_setopt($curl_handle, CURLOPT_URL, $url);
+
+// This option will return data as a string instead of direct output
+curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, true);
+
+// Execute curl & store data in a variable
+$curl_data = curl_exec($curl_handle);
+
+curl_close($curl_handle);
+
 // Decode JSON into PHP array
-$books = json_decode($curl_data);
+$transactions = json_decode($curl_data);
 
 ?>
 
@@ -52,7 +68,7 @@ $books = json_decode($curl_data);
             <td class="border border-solid border-2 border-gray-800 px-2 py-1"><?= $transaction->returned_at ?></td>
             <td class="border border-solid border-2 border-gray-800 px-2 py-1"><?= $transaction->status ?></td>
             <td class="border border-solid border-2 border-gray-800 px-2 py-1">
-                <a href=":hover underline">Show more</a>
+                <a href="show.php?trans_id=<?= $transaction->id ?>&book_id=<?= $transaction->book_id ?>&user_id=<?= $transaction->user_id ?>" class=":hover underline">Show more</a>
             </td>
         </tr>
         <?php

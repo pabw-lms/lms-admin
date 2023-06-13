@@ -2,15 +2,13 @@
 
 // session_start();
 
-$book_id = $_GET['book_id'];
-$user_id = $_GET['user_id'];
-$trans_id = $_GET['trans_id'];
+$title = $_GET['title'];
 
 // Initiate curl session in a variable (resource)
 $curl_handle = curl_init();
 
 // $url = "https://dummy.restapiexample.com/api/v1/employees";
-$url = "http://127.0.0.1:8000/api/v1/transactions/" . $trans_id;
+$url = "http://127.0.0.1:8000/api/v1/books/search/" . $title;
 
 // Set the curl URL option
 curl_setopt($curl_handle, CURLOPT_URL, $url);
@@ -24,7 +22,7 @@ $curl_data = curl_exec($curl_handle);
 curl_close($curl_handle);
 
 // Decode JSON into PHP array
-$transaction = json_decode($curl_data);
+$books = json_decode($curl_data);
 
 ?>
 <!DOCTYPE html>
@@ -80,6 +78,10 @@ $transaction = json_decode($curl_data);
             <th class="border border-solid border-2 border-gray-800">current</th>
             <th class="border border-solid border-2 border-gray-800">Action</th>
         </tr>
+
+        <?php
+        // Traverse array and print employee data
+        foreach ($books as $book) { ?> 
         <tr>
             <td class="border border-solid border-2 border-gray-800 px-2 py-1">
                 <div class="flex justify-center">
@@ -138,7 +140,11 @@ $transaction = json_decode($curl_data);
                     </div>
                 </div>
             </td>
+            
         </tr>
+        <?php
+        }
+        ?>
     </table>
 </body>
 </html>

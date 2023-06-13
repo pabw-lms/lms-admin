@@ -3,7 +3,7 @@
 $curl_handle = curl_init();
 
 // $url = "https://dummy.restapiexample.com/api/v1/employees";
-$url = "http://127.0.0.1:8000/api/v1/members";
+$url = "http://127.0.0.1:8000/api/v1/auth/users";
 
 // Set the curl URL option
 curl_setopt($curl_handle, CURLOPT_URL, $url);
@@ -17,7 +17,7 @@ $curl_data = curl_exec($curl_handle);
 curl_close($curl_handle);
 
 // Decode JSON into PHP array
-$books = json_decode($curl_data);
+$members = json_decode($curl_data);
 
 ?>
 <!DOCTYPE html>
